@@ -20,22 +20,26 @@ strava.get('/login', (req, res) => {
 });
 
 strava.get('/redirect', async (req, res) => {
-  const { code } = req.query;
+  try {
+    const { code } = req.query;
 
-  const response = await axios({
-    params: {
-      client_id: strava_client_id,
-      client_secret: strava_client_secret,
-      grant_type: 'authorization_code',
-      code
-    },
-    method: 'POST',
-    url: `${strava_url}/api/v3/oauth/token`
-  });
+    const response = await axios({
+      params: {
+        client_id: strava_client_id,
+        client_secret: strava_client_secret,
+        grant_type: 'authorization_code',
+        code
+      },
+      method: 'POST',
+      url: `${strava_url}/api/v3/oauth/token`
+    });
 
-  console.log(response.data);
+    console.log(response.data);
 
-  res.send('done')
+    res.send('done')
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
 });
 
 export default strava;
