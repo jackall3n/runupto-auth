@@ -11,7 +11,7 @@ strava.get('/login', (req, res) => {
   const q = query.stringify({
     client_id: strava_client_id,
     response_type: 'code',
-    redirect_uri: `${strava_client_url}/auth/redirect`,
+    redirect_uri: `${strava_client_url}/strava/redirect`,
     approval_prompt: 'force',
     scope: ['activity:read_all', 'activity:write', 'profile:read_all'].join(',')
   });
