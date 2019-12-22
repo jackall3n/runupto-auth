@@ -8,6 +8,8 @@ services:
     environment:
       PORT: 80
       VIRTUAL_HOST: auth.zorp.co
+      STRAVA_CLIENT_URL: http://auth.zorp.co
+      STRAVA_URL: https://www.strava.com
     expose:
       - 80
     networks:
