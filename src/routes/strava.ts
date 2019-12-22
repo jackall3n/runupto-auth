@@ -3,11 +3,11 @@ import axios from 'axios';
 import env from "../constants/env";
 import query from 'query-string';
 
-const auth = express.Router();
+const strava = express.Router();
 
 const { strava_client_id, strava_client_secret, strava_url, strava_client_url } = env;
 
-auth.get('/', (req, res) => {
+strava.get('/login', (req, res) => {
   const q = query.stringify({
     client_id: strava_client_id,
     response_type: 'code',
@@ -19,7 +19,7 @@ auth.get('/', (req, res) => {
   res.redirect(`${strava_url}/oauth/authorize?${q}`)
 });
 
-auth.get('/redirect', async (req, res) => {
+strava.get('/redirect', async (req, res) => {
   const { code } = req.query;
 
   const response = await axios({
@@ -38,4 +38,4 @@ auth.get('/redirect', async (req, res) => {
   res.send('done')
 });
 
-export default auth;
+export default strava;

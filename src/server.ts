@@ -19,5 +19,5 @@ applyMiddleware(app, middleware);
 applyRoutes(app, routes);
 
 app.listen(env.port, () => {
-  console.log('started auth');
+  console.log('started strava');
 });

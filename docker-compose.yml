@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   run-up-auth:
-    container_name: run-up-auth
+    container_name: run-up-strava
     build: .
     command: yarn start
     environment:
       PORT: 80
-      VIRTUAL_HOST: auth.zorp.co
-      STRAVA_CLIENT_URL: http://auth.zorp.co
+      VIRTUAL_HOST: strava.zorp.co
+      STRAVA_CLIENT_URL: http://strava.zorp.co
       STRAVA_URL: https://www.strava.com
     expose:
       - 80

@@ -1,13 +1,13 @@
 import { Router } from 'express';
 
 import home from './home';
-import auth from "./auth";
+import strava from "./strava";
 
 export type Route = { route: string, use: Router };
 
 const routes: Route[] = [
-  { route: '', use: home },
-  { route: 'auth', use: auth }
+  { route: '/', use: home },
+  { route: '/strava', use: strava }
 ];
 
 export default routes
