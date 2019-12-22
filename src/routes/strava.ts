@@ -38,6 +38,8 @@ strava.get('/redirect', async (req, res) => {
 
     res.send('done')
   } catch (e) {
+    console.error(e);
+
     res.status(500).send(e.message);
   }
 });
