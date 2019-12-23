@@ -13,6 +13,7 @@ services:
       VIRTUAL_HOST: auth.zorp.co
       LETSENCRYPT_HOST: auth.zorp.co
       LETSENCRYPT_EMAIL: hello@jackallen.me
+      REDIS_URL: redis://zorp.co:27017
     expose:
       - 80
     networks:

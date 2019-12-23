@@ -2,6 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import env from "../constants/env";
 import query from 'query-string';
+import { StravaSession, User } from '../../../runupto-shared/src/mongo/models';
 
 const strava = express.Router();
 
@@ -21,9 +22,9 @@ strava.get('/login', (req, res) => {
 
 strava.get('/redirect', async (req, res) => {
   try {
-    const { code } = req.query;
+    const { code, scope } = req.query;
 
-    const response = await axios({
+    const { data } = await axios({
       params: {
         client_id: strava_client_id,
         client_secret: strava_client_secret,
@@ -34,7 +35,39 @@ strava.get('/redirect', async (req, res) => {
       url: `${strava_url}/api/v3/oauth/token`
     });
 
-    console.log(response.data);
+    const { token_type, refresh_token, access_token, athlete, expires_at, expires_in } = data;
+    const { id, firstname, lastname, city, state, country, sex, profile } = athlete;
+
+    console.log(data);
+
+    const strava_session = new StravaSession({
+      token_type,
+      refresh_token,
+      access_token,
+      scope,
+      expires_at,
+      expires_in
+    });
+
+    await strava_session.save();
+
+    const user = new User({
+      name: {
+        first: firstname,
+        last: lastname
+      },
+      address: {
+        city,
+        state,
+        country
+      },
+      sex,
+      profile_picture: profile,
+      strava_id: id,
+      strava_session
+    });
+
+    await user.save();
 
     res.send('done')
   } catch (e) {

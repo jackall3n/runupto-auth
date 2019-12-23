@@ -4,6 +4,7 @@ import routes from './routes';
 import applyMiddleware from "./utils/applyMiddleware";
 import applyRoutes from "./utils/applyRoutes";
 import app from "./app";
+import connect from "../../runupto-shared/src/mongo";
 
 process.on("uncaughtException", e => {
   console.error('uncaughtException', e);
@@ -20,4 +21,8 @@ applyRoutes(app, routes);
 
 app.listen(env.port, () => {
   console.log('started auth');
+
+  connect().then(() => {
+    console.log('connected to mongo');
+  });
 });
