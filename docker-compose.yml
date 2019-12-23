@@ -3,6 +3,7 @@ version: '3.7'
 services:
   run-up-auth:
     container_name: run-up-auth
+    restart: always
     build: .
     command: yarn start
     environment:
@@ -15,9 +16,13 @@ services:
     expose:
       - 80
     networks:
-      - nginx-proxy
+      - proxy-network
+      - db-network
 
 networks:
-  nginx-proxy:
+  proxy-network:
     external: true
-    name: nginx-proxy
+    name: proxy-network
+  db-network:
+    external: true
+    name: db-network
