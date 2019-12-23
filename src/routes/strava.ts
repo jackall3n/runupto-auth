@@ -48,11 +48,19 @@ strava.get('/redirect', async (req, res) => {
       expires_in
     };
 
-    let strava_session = await StravaSession.findByIdAndUpdate({ strava_id: id }, session);
+    console.log(data);
+    console.log('session');
+
+    let strava_session = await StravaSession.update({ strava_id: id }, session, {
+      upsert: true,
+      setDefaultsOnInsert: true
+    });
+
     if (!strava_session) {
-      strava_session = new StravaSession(session);
+      console.log('new session, create');
     }
 
+    console.log('session save');
     await strava_session.save();
 
     const userUpdate = {
@@ -71,13 +79,17 @@ strava.get('/redirect', async (req, res) => {
       strava_session
     };
 
-    let user = await User.findOneAndUpdate({ strava_id: id }, userUpdate);
+    console.log('user');
+    let user = await User.update({ strava_id: id }, userUpdate, {
+      upsert: true,
+      setDefaultsOnInsert: true
+    });
+
     if (!user) {
-      user = new User(userUpdate);
+      console.log('no user, create');
     }
 
-    console.log(data);
-
+    console.log('user save');
     await user.save();
 
     res.send('done')
