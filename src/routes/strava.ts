@@ -38,20 +38,24 @@ strava.get('/redirect', async (req, res) => {
     const { token_type, refresh_token, access_token, athlete, expires_at, expires_in } = data;
     const { id, firstname, lastname, city, state, country, sex, profile } = athlete;
 
-    console.log(data);
-
-    const strava_session = new StravaSession({
+    const session = {
+      strava_id: id,
       token_type,
       refresh_token,
       access_token,
       scope,
       expires_at,
       expires_in
-    });
+    };
+
+    let strava_session = await StravaSession.findByIdAndUpdate({ strava_id: id }, session);
+    if (!strava_session) {
+      strava_session = new StravaSession(session);
+    }
 
     await strava_session.save();
 
-    const user = new User({
+    const userUpdate = {
       name: {
         first: firstname,
         last: lastname
@@ -65,7 +69,14 @@ strava.get('/redirect', async (req, res) => {
       profile_picture: profile,
       strava_id: id,
       strava_session
-    });
+    };
+
+    let user = await User.findOneAndUpdate({ strava_id: id }, userUpdate);
+    if (!user) {
+      user = new User(userUpdate);
+    }
+
+    console.log(data);
 
     await user.save();
 

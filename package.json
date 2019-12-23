@@ -20,7 +20,7 @@
     "mongoose": "^5.8.2",
     "query-string": "^6.9.0",
     "redis": "^2.8.0",
-    "shared": "git:https://github.com/jackall3n/runupto-shared.git"
+    "runupto-shared": "https://github.com/jackall3n/runupto-shared.git"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
