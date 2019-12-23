@@ -7,9 +7,11 @@ services:
     command: yarn start
     environment:
       PORT: 80
-      VIRTUAL_HOST: auth.zorp.co
-      STRAVA_CLIENT_URL: http://auth.zorp.co
+      STRAVA_CLIENT_URL: https://auth.zorp.co
       STRAVA_URL: https://www.strava.com
+      VIRTUAL_HOST: auth.zorp.co
+      LETSENCRYPT_HOST: auth.zorp.co
+      LETSENCRYPT_EMAIL: hello@jackallen.me
     expose:
       - 80
     networks:
