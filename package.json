@@ -19,8 +19,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.8.2",
     "query-string": "^6.9.0",
-    "redis": "^2.8.0",
-    "runupto-shared": "https://github.com/jackall3n/runupto-shared"
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

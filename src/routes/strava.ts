@@ -2,7 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import env from "../constants/env";
 import query from 'query-string';
-import { StravaSession, User } from '../../../runupto-shared/src/mongo/models';
+import { StravaSession, User } from '../mongo/models';
 
 const strava = express.Router();
 
@@ -51,13 +51,11 @@ strava.get('/redirect', async (req, res) => {
     console.log(data);
     console.log('session');
 
-    let strava_session = await StravaSession.update({ strava_id: id }, session, {
-      upsert: true,
-      setDefaultsOnInsert: true
-    });
+    let strava_session = await StravaSession.findOneAndUpdate({ strava_id: id }, session);
 
     if (!strava_session) {
       console.log('new session, create');
+      strava_session = new StravaSession(session);
     }
 
     console.log('session save');
@@ -80,42 +78,16 @@ strava.get('/redirect', async (req, res) => {
     };
 
     console.log('user');
-    let user = await User.update({ strava_id: id }, userUpdate, {
-      upsert: true,
-      setDefaultsOnInsert: true
-    });
+
+    let user = await User.findOneAndUpdate({ strava_id: id }, userUpdate);
 
     if (!user) {
       console.log('no user, create');
+      user = new User(userUpdate);
     }
 
     console.log('user save');
     await user.save();
-
-    res.send('done')
-  } catch (e) {
-    console.error(e);
-
-    res.status(500).send(e.message);
-  }
-});
-
-strava.get('/redirect-2', async (req, res) => {
-  try {
-    const { code } = req.query;
-
-    const response = await axios({
-      params: {
-        client_id: strava_client_id,
-        client_secret: strava_client_secret,
-        grant_type: 'authorization_code',
-        code
-      },
-      method: 'POST',
-      url: `${strava_url}/oauth/token`
-    });
-
-    console.log(response.data);
 
     res.send('done')
   } catch (e) {
