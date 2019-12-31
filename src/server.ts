@@ -1,10 +1,11 @@
 import env from "./constants/env";
 import middleware from './middleware';
-import routes from './routes';
+import controllers from './controllers';
 import applyMiddleware from "./utils/applyMiddleware";
-import applyRoutes from "./utils/applyRoutes";
+import applyControllers from "./utils/applyControllers";
 import app from "./app";
 import connect from "./mongo";
+import errorHandlers from "./utils/errorHandlers";
 
 process.on("uncaughtException", e => {
   console.error('uncaughtException', e);
@@ -17,7 +18,8 @@ process.on("unhandledRejection", e => {
 });
 
 applyMiddleware(app, middleware);
-applyRoutes(app, routes);
+applyControllers(app, controllers);
+applyMiddleware(app, errorHandlers);
 
 app.listen(env.port, () => {
   console.log('started auth');
